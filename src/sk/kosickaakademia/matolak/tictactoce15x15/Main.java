@@ -1,25 +1,31 @@
 package sk.kosickaakademia.matolak.tictactoce15x15;
 
+import java.util.Scanner;
+
 public class Main {
 
     int[][] gameMap = new int[][]{
-            {0, 1, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 1, 0, 0, 0, 0},
-            {0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 1, 2, 0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 1, 2, 0, 0, 1, 1, 1, 2, 0, 0},
-            {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
     };
+
+    boolean gameOver = false;
+    int player = 1;
+
     void printGameMap(){
         for (int i = 0; i < gameMap.length; i++) {
             for (int j = 0; j < gameMap[i].length; j++) {
@@ -29,6 +35,30 @@ public class Main {
         }
         System.out.println();
     }
+
+    public void playGame() {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Player " + player + " choosing first coordinate: ");
+        int x = scanner.nextInt() - 1;
+        System.out.println();
+        System.out.print("Player " + player + " choosing second coordinate: ");
+        int y = scanner.nextInt() -1;
+        System.out.println();
+        if (gameMap[x][y] == 0) {
+            gameMap[x][y] = player;
+            if (player == 1){
+                this.player = 2;
+            }else{
+                this.player = 1;
+            }
+        } else {
+            System.out.println("Place is not empty");
+        }
+
+
+    }
+
 
     void findWinnerInRow(){
         int temp = 0;
@@ -47,6 +77,9 @@ public class Main {
                             tempArrayPos++;
                             if (temp == 5){
                                 System.out.println("The winner is player number " + winner);
+                                this.gameOver = true;
+
+
                                 break outerloop;
                             }
                         }else{
@@ -56,14 +89,54 @@ public class Main {
                 }
             }
         }
-
     }
 
+    void findWinnerInDiagonal(){
+        int r = 15;
+        int s = 15;
+        int i,j;
+        int winner;
+        outerloop:
+        for(i=0;i<r;i++){
+            for(j=0;j<s;j++){
+                if(j<=10 && i<=10 && gameMap[i][j]*gameMap[i+1][j+1]*gameMap[i+2][j+2]*gameMap[i+3][j+3]*gameMap[i+4][j+4]==1){
+                    winner = 1;
+                    System.out.println("The winner is player number " + winner);
+                    this.gameOver = true;
+                    break outerloop;
+                }
+                if(j<=10 && i<=10 && gameMap[i][j]*gameMap[i+1][j+1]*gameMap[i+2][j+2]*gameMap[i+3][j+3]*gameMap[i+4][j+4]==32){
+                    winner = 2;
+                    System.out.println("The winner is player number " + winner);
+                    this.gameOver = true;
+                    break outerloop;
+                }
+                if(j>=4 && i<=10 && gameMap[i][j]*gameMap[i+1][j-1]*gameMap[i+2][j-2]*gameMap[i+3][j-3]*gameMap[i+4][j-4]==1){
+                    winner = 1;
+                    System.out.println("The winner is player number " + winner);
+                    this.gameOver = true;
+                    break outerloop;
+                }
+                if(j>=4 && i<=10 && gameMap[i][j]*gameMap[i+1][j-1]*gameMap[i+2][j-2]*gameMap[i+3][j-3]*gameMap[i+4][j-4]==32){
+                    winner = 2;
+                    System.out.println("The winner is player number " + winner);
+                    this.gameOver = true;
+                    break outerloop;
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         Main main = new Main();
-        main.printGameMap();
-        main.findWinnerInRow();
+
+        while (main.gameOver==false){
+            main.playGame();
+            main.printGameMap();
+            main.findWinnerInRow();
+            main.findWinnerInDiagonal();
+
+        }
     }
 
 }
